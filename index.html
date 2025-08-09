@@ -177,7 +177,7 @@
             font-family: var(--font-accent);
             font-size: 1rem;
             font-weight: 400;
-            color: var(--cool-gray);
+            color: var(--pure-white);
             margin-bottom: 2.5rem;
             letter-spacing: 0.5px;
         }
@@ -385,7 +385,7 @@
         .kaya_button--tertiary {
             background: transparent;
             border: none;
-            color: var(--cool-gray);
+            color: var(--pure-white);
             font-weight: 600;
             cursor: pointer;
             position: relative;
@@ -452,16 +452,17 @@
         }
 
         .kaya_close {
-            color: var(--cool-gray);
+            color: var(--pure-white);
             float: right;
             font-size: 28px;
             font-weight: bold;
             cursor: pointer;
             line-height: 1;
+            opacity: 0.8;
         }
 
         .kaya_close:hover {
-            color: var(--pure-white);
+            opacity: 1;
         }
 
         .kaya_modal_content h2 {
@@ -515,8 +516,8 @@
 
         .kaya_form_group input::placeholder,
         .kaya_form_group textarea::placeholder {
-            color: var(--cool-gray);
-            opacity: 0.7;
+            color: var(--pure-white);
+            opacity: 0.6;
         }
 
         .kaya_submit_button {
@@ -550,10 +551,11 @@
         }
 
         .kaya_footer_text {
-            color: var(--cool-gray);
+            color: var(--pure-white);
             font-family: var(--font-accent);
             font-size: 1rem; /* increased size */
             margin: 0;
+            opacity: 0.8;
         }
 
         /* Animations */
@@ -566,6 +568,29 @@
         .kaya_animate_on_scroll.kaya_is_visible {
             opacity: 1;
             transform: translateY(0);
+        }
+
+        /* Mobile Optimized Gradient - Better Performance */
+        @media (max-width: 768px) {
+            body {
+                background: linear-gradient(135deg,
+                    var(--sky-tint) 0%,
+                    #9fc9d1 25%,
+                    var(--kaya-blue) 50%,
+                    #4a6f79 75%,
+                    #3a3a3a 100%
+                );
+                background-size: 200% 200%;
+                animation: kayaGradientMobile 80s ease-in-out infinite alternate;
+            }
+        }
+        
+        @keyframes kayaGradientMobile {
+            0% { background-position: 0% 0%; }
+            25% { background-position: 100% 0%; }
+            50% { background-position: 100% 100%; }
+            75% { background-position: 0% 100%; }
+            100% { background-position: 0% 0%; }
         }
 
         /* Mobile Responsive */
@@ -732,19 +757,83 @@
             }
         }
 
-        @media (prefers-reduced-motion: reduce) {
-            #kaya_blob { animation: none; }
-            .kaya_magnetic_link,
-            .kaya_feature_card,
-            .kaya_submit_button,
-            .kaya_nav_button { transition: none; }
-            body { animation: none; }
-            body::after { animation: none; }
-            .kaya_grid_overlay { animation: none; }
+        /* Dark Mode Support */
+        /* Removed old prefers-color-scheme block in favor of attribute-based theming */
+        :root[data-theme="dark"] {
+            --midnight-black: #0A0A0A;
+            --surface: #141414;
+            --border: rgba(255, 255, 255, 0.12);
+        }
+        :root[data-theme="dark"] body {
+            background: linear-gradient(135deg,
+                rgba(205, 228, 232, 0.08) 0%,
+                rgba(159, 201, 209, 0.12) 18%,
+                rgba(38, 70, 83, 0.8) 55%,
+                rgba(74, 111, 121, 0.55) 78%,
+                rgba(20, 20, 20, 0.95) 100%
+            );
+        }
+        :root[data-theme="dark"] .kaya_main_container { background: rgba(20, 20, 20, 0.95); }
+        :root[data-theme="dark"] .kaya_modal_content { background: rgba(20, 20, 20, 0.98); }
+        :root[data-theme="dark"] .kaya_footer_text { opacity: 0.75; }
+        :root[data-theme="dark"] .kaya_button--primary { background: linear-gradient(135deg, #1d3a43, #0f242b); }
+        :root[data-theme="dark"] .kaya_button--primary:hover { background: linear-gradient(135deg, #0f242b, #000); }
+        :root[data-theme="dark"] .kaya_instagram_overlay .kaya_social_circle { background: #1d3a43; }
+
+        /* Theme Toggle Button */
+        #kaya_theme_toggle {
+            position: fixed;
+            top: 14px;
+            right: 14px;
+            z-index: 200;
+            background: rgba(255,255,255,0.15);
+            color: var(--pure-white);
+            border: 1px solid rgba(255,255,255,0.25);
+            backdrop-filter: blur(10px);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background .3s ease, transform .3s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        #kaya_theme_toggle:hover { background: rgba(255,255,255,0.25); transform: translateY(-2px); }
+        #kaya_theme_toggle svg { width: 22px; height: 22px; fill: currentColor; }
+        :root[data-theme="dark"] #kaya_theme_toggle { background: rgba(255,255,255,0.1); }
+        :root[data-theme="dark"] #kaya_theme_toggle:hover { background: rgba(255,255,255,0.2); }
+
+        /* Custom Scrollbar for WebKit browsers */
+        ::-webkit-scrollbar {
+            width: 12px;
+            height: 12px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Accessibility - Focus Styles */
+        :focus {
+            outline: 3px solid var(--kaya-blue);
+            outline-offset: 2px;
         }
     </style>
 </head>
 <body>
+    <button id="kaya_theme_toggle" aria-label="Toggle dark mode" title="Toggle theme">
+        <!-- Sun icon (shown in dark mode) & Moon icon (shown in light mode); both in DOM for simplicity -->
+        <svg class="kaya_icon_moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.79A9 9 0 0 1 11.21 3 7 7 0 1 0 21 12.79z"/></svg>
+        <svg class="kaya_icon_sun" viewBox="0 0 24 24" aria-hidden="true" style="display:none"><path d="M6.76 4.84l-1.8-1.79-1.42 1.41 1.79 1.8 1.43-1.42zm10.48 0l1.79-1.8 1.42 1.41-1.8 1.79-1.41-1.42zM12 5a7 7 0 1 1 0 14 7 7 0 0 1 0-14zm0-3h-2v3h2V2zm0 18h-2v3h2v-3zM4 11H1v2h3v-2zm19 0h-3v2h3v-2zM6.76 19.16l-1.43 1.42-1.79-1.8 1.42-1.41 1.8 1.79zm11.48 0l1.41 1.43 1.8-1.79-1.42-1.42-1.79 1.78z"/></svg>
+    </button>
     <div class="kaya_grid_overlay" aria-hidden="true"></div>
     <div id="kaya_page_wrapper">
 
@@ -795,7 +884,7 @@
     </div>
     
     <footer id="kaya_footer">
-        <p class="kaya_footer_text">&copy; <span id="current-year">2024</span> Kaya. Because strength is earned.</p>
+        <p class="kaya_footer_text">&copy; <span id="current-year">2025</span> Kaya.</p>
     </footer>
 
     <!-- Contact Modal -->
@@ -822,7 +911,33 @@
     </div>
 
     <script>
+        // Theme handling (runs before other DOMContentLoaded to avoid FOUC)
+        (function() {
+            const stored = localStorage.getItem('kaya-theme');
+            if (stored) {
+                document.documentElement.setAttribute('data-theme', stored);
+            } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+
         document.addEventListener('DOMContentLoaded', () => {
+            // Add theme toggle logic
+            const toggleBtn = document.getElementById('kaya_theme_toggle');
+            const applyIcons = () => {
+                const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                toggleBtn.querySelector('.kaya_icon_moon').style.display = isDark ? 'none' : 'block';
+                toggleBtn.querySelector('.kaya_icon_sun').style.display = isDark ? 'block' : 'none';
+            };
+            toggleBtn.addEventListener('click', () => {
+                const current = document.documentElement.getAttribute('data-theme');
+                const next = current === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', next);
+                localStorage.setItem('kaya-theme', next);
+                applyIcons();
+            });
+            applyIcons();
+
             // Magnetic hover for buttons and social icons (gentle)
             function initMagneticLinks() {
                 const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
